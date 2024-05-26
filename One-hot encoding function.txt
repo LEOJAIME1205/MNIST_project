@@ -1,0 +1,71 @@
+The provided code snippet defines a function called `one_hot` that performs one-hot encoding on a vector of labels `Y`. One-hot encoding is a technique frequently used in machine learning, especially in classification, where we convert categorical data into a binary format so that learning algorithms can process it effectively. I'll explain step-by-step what each line of code does:
+
+```python
+def one_hot(Y):
+    one_hot_Y = np.zeros((Y.size, Y.max() + 1))
+```
+
+1. **Function Definition:** The function `one_hot` is defined with a parameter `Y`.
+2. **Initialization of the Zero Matrix:**
+   - `Y.size` returns the number of elements in the vector `Y`.
+   - `Y.max()` returns the maximum value in the vector `Y`.
+   - `np.zeros((Y.size, Y.max() + 1))` creates a zero matrix with the number of rows equal to the size of `Y` and the number of columns equal to the maximum value in `Y` plus 1. This initializes the structure of the one-hot matrix, where each row will correspond to a label in the vector `Y` and each column will represent a possible class.
+
+```python
+    one_hot_Y[np.arange(Y.size), Y] = 1
+```
+
+3. **Assigning Ones:**
+   - `np.arange(Y.size)` creates an array of indices ranging from `0` to `Y.size - 1`.
+   - `one_hot_Y[np.arange(Y.size), Y] = 1` uses these indices to assign `1` at positions corresponding to the label values in `Y`. Essentially, for each label in `Y`, it places a `1` in the column corresponding to the label value, in the row respective to the index of the label.
+
+```python
+    one_hot_Y = one_hot_Y.T
+```
+
+4. **Transposing the Matrix:**
+   - `one_hot_Y.T` transposes the matrix, meaning it swaps rows with columns. This is done so that each column in the transposed matrix represents a one-hot vector for a label in `Y`.
+
+```python
+    return one_hot_Y
+```
+
+5. **Returning the One-Hot Matrix:**
+   - The function returns the transposed one-hot matrix.
+
+### Practical Example
+
+Suppose `Y` is a vector of labels: `Y = np.array([0, 2, 1, 2])`.
+
+1. Initialization of the zero matrix:
+   ```python
+   one_hot_Y = np.zeros((4, 3))  # Y.size = 4, Y.max() + 1 = 3
+   # one_hot_Y now is:
+   # [[0. 0. 0.]
+   #  [0. 0. 0.]
+   #  [0. 0. 0.]
+   #  [0. 0. 0.]]
+   ```
+
+2. Assigning ones:
+   ```python
+   one_hot_Y[np.arange(4), Y] = 1
+   # np.arange(4) = [0, 1, 2, 3]
+   # Y = [0, 2, 1, 2]
+   # one_hot_Y now is:
+   # [[1. 0. 0.]
+   #  [0. 0. 1.]
+   #  [0. 1. 0.]
+   #  [0. 0. 1.]]
+   ```
+
+3. Transposing the matrix:
+   ```python
+   one_hot_Y = one_hot_Y.T
+   # one_hot_Y now is:
+   # [[1. 0. 0. 0.]
+   #  [0. 0. 1. 0.]
+   #  [0. 1. 0. 1.]]
+   ```
+
+Thus, the `one_hot` function converts the label vector `Y` into a matrix where each column is the one-hot representation of the respective label.
